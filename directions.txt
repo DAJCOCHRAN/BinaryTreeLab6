@@ -1,0 +1,113 @@
+CISC2200: Data Structure LAB6 assignment
+
+1. Overview and Codebase
+
+In this lab, we will practice with binary (search) tree structure.
+
+2. Requirements: You are asked to extend the TreeType class to support the following member functions:
+
+        Implement a member function IsFullTree to test whether the tree is full or not. Per wikipedia, a full binary tree is one where every node in the tree has either 0 or 2 children.
+        Implement a member function IsBST to test whether the tree is a binary search tree, i.e., whether for each node in the tree, its value is larger than values stored in nodes in its left subtree, and smaller than values stored in nodes in its right subtree.
+        Write a member function GetNodesAtLevel that returns an array of items stored in the given level of the tree:
+
+        /* return the number of nodes in the given level, itemArray[0...] stores the items values
+         precondition: level >= 0 
+        */
+        int TreeType::GetNodesAtLevel (ItemType * itemArray, int level)
+        {
+          //Todo by you... 
+        }
+
+        Write a member function Ancestors that prints the ancestors of a given node (whose info field contains the given value)
+
+        //Display the items stored in the parent of the node, the grandparent, and so on
+        //starting from root (ancestor of all nodes), ... all the way to the parent of the node 
+        void TreeType::PrintAncestors (ItemType value)
+        {
+
+        }
+
+    Add a member function GetSmallest that returns the value of the smallest item stored in the tree. Note that in doing so, you could introduce a helper (recursive) function that takes a TreeType pointer as parameter, or you could implement the member function directly using a loop to walk the tree by keep going to left subtree.
+
+    //Add this helper function if you want to implement the walking recursively 
+    //this is a static member function (which does not have calling object). 
+    void TreeType::GetSmallest (TreeNode * root, ItemType & smallest) //this is the helper function
+    {
+       //...
+    } 
+
+    void TreeType::GetSmallest (ItemType & smallest) const //This is the member function 
+    {
+      // ... 
+    } 
+
+    Modify DeleteNode function in the TreeType.cpp, so that in case (Case 3 in the code below) the node has left and right child, it will replace the node's value with that of its successor (i.e., the smallest value in its right tree), and then delete that value from its right tree.
+
+    void DeleteNode(TreeNode*& tree)
+    // Deletes the node pointed to by tree.
+    // Post: The user's data in the node pointed to by tree is no 
+    //       longer in the tree.  If tree is a leaf node or has only one 
+    //       non-NULL child pointer the node pointed to by tree is 
+    //       deleted, and tree is updated to point to the non-NULL child,
+    //       otherwise, the user's data is replaced by its 
+    //       logical predecessor and the predecessor's node is deleted.
+    {
+      ItemType data;
+      TreeNode* tempPtr;
+
+      tempPtr = tree;
+      if (tree->left == NULL)
+      {
+        tree = tree->right;
+        delete tempPtr;
+      }
+      else if (tree->right == NULL)
+      {
+        tree = tree->left;
+        delete tempPtr;
+      }
+      else
+      { //Case 3: If the node has left child and right child ... 
+
+        //TODO by you
+
+      }
+      
+    }
+
+    In the main.cpp, add an option for creating a balanced BST from an array of char, such that the medium value in the array is the root of the tree, and the left and right subtrees have same number of nodes...
+
+    TreeType::TreeType (ItemType items[], int len)
+    {
+       //Initialize the tree (binary search tree) with items given in the 
+       // array (length of the array is passed as "len" 
+
+       // You need to make the tree so that it's height is as short as possible 
+
+       // You should consider calling a recursive function to do so 
+
+    } 
+
+    // in main()
+    main()
+    {
+    ... 
+    case 'O': 
+            //declare earler in main... char words[26];
+    	cout <<"Enter a string...";
+    	cin >> words; 
+
+    	
+       	//sort the char array (using bubble sort or selection sort)
+
+       	//call the above constructor function of TreeType to build the 
+    	optimal BST tree (the implementation of the member function
+            shall make use of a recursive function): 
+    	
+    	break;
+
+Submission
+
+Please submit each source files, class specficiation file (header file) and implemenetation file (.cpp file), and driver program
+
+This page was last modified on: 11/18/2019 16:02:30 
