@@ -24,14 +24,15 @@ class TreeType{
     // select the root
     int setRoot(string input);
     //check the tree is full or not
+    TreeNode * getRoot();
     void fillTree(string input, int ignore);
-    void IsFullTree(const TreeNode &head);
+    void IsFullTree(TreeNode * &root, int requirement);
     //check if tree organization is correct
     void IsBST(const TreeNode &head);
     //get the count of all nodes in the tree
     void getLength(const TreeNode &head);
     //get nodes at current level
-    void getNodesAtLevel(const TreeNode &head, int level);
+    void getNodesAtLevel(TreeNode * &head, int level);
     //prints ancestor of given node
     void printAncestor(const TreeNode &currentNode, int level);
     TreeType();

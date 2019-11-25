@@ -1,0 +1,15 @@
+hiya!
+
+y root-
+
+h left of y -
+
+skip y left for i
+
+i right of h
+
+skipped root 
+
+skip y left
+
+skip h left
