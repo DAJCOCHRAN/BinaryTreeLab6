@@ -1,16 +1,21 @@
 #include"header.h"
-void assignMonkey(Node * & node);
-void assignList(string myString, Node * &node);
-void printList(Node * &node);
-void deleteList(Node * &head);
+#include<cctype>
+void assignList(string myString);
+
+string toUpper(string input);
 
 int main(){
-    bool quit = false;
-    string input = "";
+    //prompt string input
+    string input;
+    int posToIgnore = 0;
+    cout << "What is the statement that you want loaded into the binary tree?" << endl;
+    cin >> input;
+    input = toUpper(input);
     TreeType tree;
-    cout<<"What statement shall be added into a tree?"<< endl;
-    cin>>input;
-   
-    
+    posToIgnore = tree.setRoot(input);
+    cout << posToIgnore <<endl;
+    TreeNode * null = nullptr;
+    tree.fillTree(input, posToIgnore);
+    //menu
     return 0;
 }
