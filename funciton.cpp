@@ -259,3 +259,23 @@ void TreeType::IsFullTree(TreeNode * &root, int requirement){
         } 
     }
 }
+//returning a string as a character array
+string TreeType::getNodesAtLevel(TreeNode * &root, int level){
+    static string output = "";
+    static string extracted;
+    static int countLvl = 0;
+    if(countLvl == level){
+        cout << "passed"<<endl;
+        extracted = root->Info;
+        output.append(extracted);
+        return output;
+    }
+    countLvl++;
+    cout << countLvl <<endl;
+    if(root->left != nullptr){
+        getNodesAtLevel(root->left, level);
+    }
+    if(root->right != nullptr){
+        getNodesAtLevel(root->right, level);
+    }
+}

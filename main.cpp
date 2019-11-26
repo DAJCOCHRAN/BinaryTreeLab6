@@ -8,6 +8,7 @@ int main(){
     //prompt string input
     char input;
     string statement;
+    string collectedLevel;
     TreeType tree;
     TreeNode * root = tree.getRoot();
     int posToIgnore = 0;
@@ -48,7 +49,8 @@ int main(){
         case '3':
             cout<<"what level would you like to check"<<endl;
             cin >> level;
-            tree.getNodesAtLevel(root, level);
+            collectedLevel = tree.getNodesAtLevel(root, level);
+            cout << collectedLevel <<endl;
         case 'q':
             return 0;
         default: 

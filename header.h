@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<cmath>
 using namespace std;
 typedef char ItemType;
 
@@ -9,6 +10,10 @@ typedef char ItemType;
 };
 */
 //place character inside of tree
+struct List{
+    ItemType value;
+    List * next = nullptr;
+};
 struct TreeNode{
     ItemType Info = ' ';
     TreeNode * right = nullptr;
@@ -32,7 +37,7 @@ class TreeType{
     //get the count of all nodes in the tree
     void getLength(const TreeNode &head);
     //get nodes at current level
-    void getNodesAtLevel(TreeNode * &head, int level);
+    string getNodesAtLevel(TreeNode * &head, int level);
     //prints ancestor of given node
     void printAncestor(const TreeNode &currentNode, int level);
     TreeType();
