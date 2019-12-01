@@ -98,7 +98,6 @@ int TreeType::setRoot(string input){
         if(input[i] > 'I' && input[i] < 'R'){
             root->Info = input[i];
             cout<<"Root Address: "<< root <<endl;
-
             cout << "Root Value: " << input[i] << " has been placed as root" <<endl;
             return i;
         }
@@ -136,86 +135,79 @@ int TreeType::setRoot(string input){
     return 0;
 }
 
-void TreeType::fillTree(string input, int ignore){ 
-        static TreeNode * node = root;
-        static TreeNode * prev = root;
-        static int pos = 0;
+void TreeType::fillTree(TreeNode * & node, string input, int ignore){
 
+        cout<< "----------AT POSITION------------------"<<endl;
+        cout<< "Ancestor: " << node->ancestor <<endl;
+        cout<< "Address:  " << node <<endl;
+        cout<< "Value:  " << node->Info <<endl;
+        cout<< "Left address: " << node->left <<endl;
+        cout<< "Right address: " << node->right <<endl;
+        cout<< "-----------------------------------------"<<endl;
         
+        static int pos = 0; 
         //our position is past the last character
-        if(pos == input.length()){
-        cout << "tree has been filled" <<endl;
+        //if position is on root position
+        if(pos == ignore){
+            cout << "SKIPPED ROOT POSITION" <<endl;
+            pos++;
+            fillTree(node, input, ignore);
+        }
+        else if(pos == input.length()){
+            cout<<"TREE HAS BEEN BUILT"<<endl;
             return;
         }
-        //if position is on root position
-        else if(pos == ignore){
-            cout << "skipped root position" <<endl;
-            pos++;
-            fillTree(input, ignore);
-        }
-        //source node is greater than character and is a leaf --LEFT
+        //source node is greater than input character --LEFT
         else if((node->Info > input[pos]) && (node->left == nullptr)){
             TreeNode * leftLeaf = new TreeNode;
             leftLeaf->Info = input[pos];
             node->left = leftLeaf;
             leftLeaf->ancestor = node;
-            cout<<"------------PLACE LEAF LEFT-------------"<<endl;
-            cout<<"Ancestor: " << leftLeaf->ancestor <<endl;
-            cout<<"Address   " << leftLeaf <<endl;
-            cout<<"Value     " << leftLeaf->Info <<endl;
-            cout<<"left leaf: " << leftLeaf->left <<endl;
+            cout<<"------------PLACED LEAF LEFT-------------"<<endl;
+            cout<<"Ancestor:   " << leftLeaf->ancestor <<endl;
+            cout<<"Address:    " << leftLeaf <<endl;
+            cout<<"Value:      " << leftLeaf->Info <<endl;
+            cout<<"left leaf:  " << leftLeaf->left <<endl;
             cout<<"right leaf: "<< leftLeaf->right << endl;
-            cout<<"-------------------------"<<endl;
+            cout<<"-----------------------------------------"<<endl;
             //prepare next recursion with new character
-            prev = root;
-            node = root;
             pos++;
-            fillTree(input, ignore);
+            while(node->ancestor != nullptr){
+                node = node->ancestor;
+            }
+            fillTree(node, input, ignore);
         }
-        //source node is greater and is a branch --LEFT
+        //target node is greater than character and is a branch --LEFT
         else if((node->Info > input[pos]) && (node->left != nullptr)){
-            cout<< "----------BRANCH SKIPPING LEFT------------------"<<endl;
-            cout<< "Ancestor: " << node->ancestor <<endl;
-            cout<< "Address:  " << node << "is full" <<endl;
-            cout<< "Value:  " << node->Info <<endl;
-            cout<< "Skipping to the left: " << node->right <<endl;
-            cout<< "Left address: " << node->left <<endl;
-            cout<< "----------------------------"<<endl;
-            prev = node;
+            cout<<"SKIPPED LEFT"<<endl;
             node = node->left;
-            fillTree(input, ignore);
+            fillTree(node, input, ignore);
         }
-        //source node is less/equal than character and is a leaf --RIGHT
+        //target node is less/equal than character and is a leaf --RIGHT
         else if((node->Info <= input[pos]) && (node->right == nullptr)){
             TreeNode * rightLeaf = new TreeNode;
             rightLeaf->Info = input[pos];
             node->right = rightLeaf;
             rightLeaf->ancestor = node;
-            cout<<"----------PLACE LEAF RIGHT---------------"<<endl;
-            cout<<"Ancestor: " << rightLeaf->ancestor <<endl;
-            cout<<"Address   " << rightLeaf <<endl;
-            cout<<"Value     " << rightLeaf->Info <<endl;
-            cout<<"left should be null" << rightLeaf->left <<endl;
-            cout<<"right leaf should be null"<< rightLeaf->right << endl;
-            cout<<"-------------------------"<<endl;
-            //prepare next cycle with new character
-            prev = root;
-            node = root;
+            cout<<"------------PLACED LEAF RIGHT-------------"<<endl;
+            cout<<"Ancestor:   " << rightLeaf->ancestor <<endl;
+            cout<<"Address:    " << rightLeaf <<endl;
+            cout<<"Value:      " << rightLeaf->Info <<endl;
+            cout<<"left leaf:  " << rightLeaf->left <<endl;
+            cout<<"right leaf: "<< rightLeaf->right << endl;
+            cout<<"-----------------------------------------"<<endl;
+            //prepare next cycle with next position
             pos++;
-            fillTree(input, ignore);
+            while(node->ancestor != nullptr){
+                node = node->ancestor;
+            }
+            fillTree(node, input, ignore);
         }
         //source node is less/equal and is a branch --RIGHT
         else if((node->Info <= input[pos]) && (node->right != nullptr)){
-            cout<< "----------BRANCH SKIPPING RIGHT------------------"<<endl;
-            cout<< "Node " << node << "is full" <<endl;
-            cout<< "Ancestor: "<< node->ancestor <<endl;
-            cout<< "Value: " << node->Info <<endl;
-            cout<< "Skipping to the right: " << node->right <<endl;
-            cout<< "Left address: " << node->left <<endl;
-            cout<< "----------------------------"<<endl;
-            prev = node;
+            cout<<"SKIPPED RIGHT"<<endl;
             node = node->right;
-            fillTree(input, ignore);
+            fillTree(node, input, ignore);
         }
         else{
             cout << "error" <<endl;
@@ -230,52 +222,49 @@ string toUpper(string input){
     }
     return input;
 }
-
+/*
+Takes the Root and requirement length and 
+*/
 void TreeType::IsFullTree(TreeNode * &root, int requirement){
-    cout<<requirement<<": requirement" << endl;
-    static int count = 0;
-    //base case when we find a node that is not a complete branch or not a leaf
+    //count of nodes, include the root
+    static int nodeCount = 1;
+    //base case when we find a node that is a incomplete branch
     if(((root->left== nullptr)&&(root->right!=nullptr))||((root->left!= nullptr)&&(root->right==nullptr))){
         cout<<"Not a complete tree"<<endl;
         return;
     }
-    //we find a leaf or complete branch
-    if(((root->left == nullptr)&&(root->right == nullptr))||((root->left != nullptr) && (root->right != nullptr))){
-        count++;
-        cout<<count<<"The count of nodes found"<<endl;
+    //we find a leaf
+    if((root->left == nullptr)&&(root->right == nullptr)){
+        nodeCount++;
+        //This leaf is the last leaf found
+        if(nodeCount == requirement){
+            cout<<"This is a complete tree!!!"<<endl;
+            return;
+        }
     }
-    cout<< root->Info <<endl;
-    if(root->left != nullptr){
+    //We find a branch
+    if((root->left != nullptr) && (root->right != nullptr)){
+        cout<<"Branch Found"<<endl;
+        nodeCount++;
         IsFullTree(root->left, requirement);
-    }
-    if(root->right != nullptr){
         IsFullTree(root->right, requirement);
     }
     //once we reach the last node, we should be at the last null ptr of left/right and requirment should be count
-    if((root->right == nullptr)||root->left == nullptr){
-        if(count == requirement){
-            cout<<"tree is complete" <<endl;
-            return;
-        } 
-    }
 }
 //returning a string as a character array
-string TreeType::getNodesAtLevel(TreeNode * &root, int level){
-    static string output = "";
-    static string extracted;
-    static int countLvl = 0;
-    if(countLvl == level){
-        cout << "passed"<<endl;
-        extracted = root->Info;
-        output.append(extracted);
-        return output;
+/*
+    TRY TO ALLOCATE A COCK SUCKIN ITEM ARRAY TO COLLECT ALL NODES ALONG WITH NODE COUNT
+*/
+int TreeType::getNodesAtLevel(TreeNode * &node, int level){
+    static int currlvl = 0;
+    static int nodeCount = 0;
+    if(currlvl != level){
+        currlvl++;
+        getNodesAtLevel(node->left, level);
+        getNodesAtLevel(node->right, level);
     }
-    countLvl++;
-    cout << countLvl <<endl;
-    if(root->left != nullptr){
-        getNodesAtLevel(root->left, level);
-    }
-    if(root->right != nullptr){
-        getNodesAtLevel(root->right, level);
+    else if(currlvl == level){
+        nodeCount++;
+        return nodeCount;
     }
 }

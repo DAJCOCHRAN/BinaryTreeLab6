@@ -8,14 +8,17 @@ int main(){
     //prompt string input
     char input;
     string statement;
-    string collectedLevel;
+    int nodesAtLevel;
     TreeType tree;
     TreeNode * root = tree.getRoot();
     int posToIgnore = 0;
     int level = 0;
+    int nodeCount = 0;
+    int pos = 0;
     //CHECK FUNCTION INSTRUCTIONS FOR BEST GRADE
     while(input != 'q'){
     cout<<"--------------MENU--------------------" <<endl;
+    //fillTree()
     cout<<"f)Fill the tree with Nodes"<< endl;
     //full tree 2 level combo: mdajrqt
     //IsFullTree()
@@ -23,7 +26,7 @@ int main(){
     //IsBST()
     cout<<"2) Check that tree is orgainized"<<endl;
     //GetNodesAtLevel
-    cout<<"3) Print Nodes at a certain level"<<endl;
+    cout<<"3) Get Node count at a certain level from 0 to N level"<<endl;
     //PringAncestors
     cout<<"4) Print Node ancestors" <<endl;
     //GetSmallest()
@@ -39,9 +42,9 @@ int main(){
             cout << "What is the statement that you want loaded into the binary tree?" << endl;
             cin >> statement;
             statement = toUpper(statement);
+            //posToIgnore for element used as root
             posToIgnore = tree.setRoot(statement);
-            cout << posToIgnore <<endl;
-            tree.fillTree(statement, posToIgnore);
+            tree.fillTree(root, statement, posToIgnore);
             break;
         case '1':
             tree.IsFullTree(root, statement.length());
@@ -49,8 +52,10 @@ int main(){
         case '3':
             cout<<"what level would you like to check"<<endl;
             cin >> level;
-            collectedLevel = tree.getNodesAtLevel(root, level);
-            cout << collectedLevel <<endl;
+            nodeCount = tree.getNodesAtLevel(root, level);
+            cout<<"Node Count is " << nodeCount<< endl;
+            cout<<"at level " << level << endl;
+            break;
         case 'q':
             return 0;
         default: 
