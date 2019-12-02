@@ -252,10 +252,7 @@ void TreeType::IsFullTree(TreeNode * &root, int requirement){
     //once we reach the last node, we should be at the last null ptr of left/right and requirment should be count
 }
 
-/*
-    TRY TO ALLOCATE A COCK SUCKIN ITEM ARRAY TO COLLECT ALL NODES ALONG WITH NODE COUNT
-    node starts from farthest left position
-*/
+
 int TreeType::getNodesAtLevel(TreeNode * &node, int level, ItemType * mainArr){ 
     static int currLvl = 0;
     static int NodeCount = 1;
