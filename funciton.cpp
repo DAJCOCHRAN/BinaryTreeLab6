@@ -251,20 +251,50 @@ void TreeType::IsFullTree(TreeNode * &root, int requirement){
     }
     //once we reach the last node, we should be at the last null ptr of left/right and requirment should be count
 }
-//returning a string as a character array
+
 /*
     TRY TO ALLOCATE A COCK SUCKIN ITEM ARRAY TO COLLECT ALL NODES ALONG WITH NODE COUNT
+    node starts from farthest left position
 */
-int TreeType::getNodesAtLevel(TreeNode * &node, int level){
-    static int currlvl = 0;
-    static int nodeCount = 0;
-    if(currlvl != level){
-        currlvl++;
-        getNodesAtLevel(node->left, level);
-        getNodesAtLevel(node->right, level);
+int TreeType::getNodesAtLevel(TreeNode * &node, int level, ItemType * mainArr){ 
+    static int currLvl = 0;
+    static int NodeCount = 1;
+    static int pos = 0;
+
+    if(currLvl == level){
+        NodeCount++;
+        return NodeCount;
     }
-    else if(currlvl == level){
-        nodeCount++;
-        return nodeCount;
+
+    else if(currLvl != level){
+        currLvl++;
+        if(node->left != nullptr){
+        getNodesAtLevel(node->left, level, mainArr);
+        }
+        if(node->right != nullptr){
+            pos++;
+        getNodesAtLevel(node->right, level, mainArr);
+        }
+    }
+    
+}
+
+TreeNode * TreeType::getMostLeftNode(TreeNode * & node, int level){
+    static int currLevel = 0;
+    if(currLevel == level){
+        cout<<"most left found" <<endl;
+        return node;
+    }
+    if(((node->left != nullptr)&& (node->right != nullptr)) || ((node->left != nullptr)&& (node->right == nullptr))){
+        currLevel++;
+        getMostLeftNode(node->left, level);
+    }
+    else if (node->right != nullptr){
+        currLevel++;
+        getMostLeftNode(node->right, level);
+    }
+    else if((node->left == nullptr) && (node->right == nullptr)){
+        cout<<"your tree is not balanced"<<endl;
+        return root;
     }
 }

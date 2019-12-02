@@ -15,7 +15,7 @@ struct List{
     List * next = nullptr;
 };
 struct TreeNode{
-    ItemType Info = ' ';
+    ItemType Info;
     TreeNode * right = nullptr;
     TreeNode * left = nullptr;
     TreeNode * ancestor = nullptr;
@@ -40,8 +40,10 @@ class TreeType{
     //get the count of all nodes in the tree
     void getLength(const TreeNode &head);
     //get number of nodes at current level
-    int getNodesAtLevel(TreeNode * &node, int level);
+    int getNodesAtLevel(TreeNode * &node, int level, ItemType * mainArr);
     //prints ancestor of given node
     void printAncestor(const TreeNode &currentNode, int level);
     friend void charValue();
+
+    TreeNode * getMostLeftNode(TreeNode * & node, int level);
 };

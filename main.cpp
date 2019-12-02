@@ -11,10 +11,13 @@ int main(){
     int nodesAtLevel;
     TreeType tree;
     TreeNode * root = tree.getRoot();
+    TreeNode * mostLeft = root;
     int posToIgnore = 0;
-    int level = 0;
+    int inputLevel = 0;
+    int currLevel = 0;
     int nodeCount = 0;
     int pos = 0;
+    ItemType myArr[50]; 
     //CHECK FUNCTION INSTRUCTIONS FOR BEST GRADE
     while(input != 'q'){
     cout<<"--------------MENU--------------------" <<endl;
@@ -51,10 +54,12 @@ int main(){
             break;
         case '3':
             cout<<"what level would you like to check"<<endl;
-            cin >> level;
-            nodeCount = tree.getNodesAtLevel(root, level);
+            cin >> inputLevel;
+            //find first most left valid
+                
+            nodeCount = tree.getNodesAtLevel(root, inputLevel, myArr);
             cout<<"Node Count is " << nodeCount<< endl;
-            cout<<"at level " << level << endl;
+            cout<<"at level " << inputLevel << endl;
             break;
         case 'q':
             return 0;
