@@ -1,88 +1,56 @@
 #include"header.h"
 //main funcitons
 //initialize tree root in heap
+
+string toUpper(string input){
+    for (int i=0; i<input.length(); i++){
+        input[i] = toupper(input[i]);
+    }
+    return input;
+}
+
+bool powerTwoCheck(int inputLength){
+    int check = inputLength % 2;
+    if (inputLength == 1){
+        return true;
+    }
+    else if(check == 0){
+        inputLength = inputLength / 2;
+        powerTwoCheck(check);
+    }
+    else{
+        return false;
+    }
+}
+
 TreeType::TreeType(){
     root = new TreeNode;
 }
-//destroy initial root
 /*----------------------------------
-Destructor for tree
+Destructor function for tree and its nodes
 ------------------------------------*/
-TreeType::~TreeType(){
-    int count = 0;
-    TreeNode * node = root->left;
-    TreeNode * prev = nullptr;
-    while(root->left != nullptr){
-        if((node->left == nullptr) && (node->right == nullptr)){
-            cout << node->Info << " Deleted!" << endl;
-            prev = node->ancestor;
-            if(prev->left == node){
-                prev->left = nullptr;
-            }
-            else{
-                prev->right = nullptr;
-            }
+void TreeType::DeleteTree(TreeNode * & node){ 
+    if((node->left == nullptr) && (node->right == nullptr)){
+        cout<<"leaf has been deleted!!" << endl;
+        delete node;
+        return;
+    }
+    else{
+        if(node->left != nullptr){
+            DeleteTree(node->left);
+        }
+        if(node->right != nullptr){
+            DeleteTree(node->right);
+        }
+        if(node == root){
+            cout<<"root has been deleted"<<endl;
             delete node;
-            count++;
-            node = root;
-            cout<<"set back to root" << endl;
-        }
-        else if((node->left != nullptr) && (node->right == nullptr)){
-            cout<<"skipped left"<<endl;
-            node = node->left;
-        }
-        else if((node->left == nullptr) && (node->right != nullptr)){
-            cout<<"skipped right"<<endl;
-            node = node->right;
-        }
-        //priority of shifting left if left and right pointers are valid
-        else if((node->left != nullptr) && (node->right != nullptr)){
-            cout<<"skipped left"<<endl;
-            node = node->left;
         }
         else{
-            cout << "error" <<endl;
-        }
-    }
-    cout << "left Tree cleared!" <<endl;
-    node = root;
-    while(root->right != nullptr){
-        if((node->left == nullptr) && (node->right == nullptr)){
-            cout << node->Info << " Deleted!" << endl;
-            prev = node->ancestor;
-            if(prev->left == node){
-                prev->left = nullptr;
-            }
-            else{
-                prev->right = nullptr;
-            }
+            cout<<"branch has been deleted"<<endl;
             delete node;
-            count++;
-            node = root;
-            cout<<"set back to root" << endl;
-        }
-        else if((node->left != nullptr) && (node->right == nullptr)){
-            cout<<"skipped left"<<endl;
-            node = node->left;
-        }
-        else if((node->left == nullptr) && (node->right != nullptr)){
-            cout<<"skipped right"<<endl;
-            node = node->right;
-        }
-        //priority of shifting left if left and right pointers are valid
-        else if((node->left != nullptr) && (node->right != nullptr)){
-            cout<<"skipped left"<<endl;
-            node = node->left;
-        }
-        else{
-            cout << "error" <<endl;
         }
     }
-    cout << "right Tree cleared!" <<endl;
-    cout << "Root "<< root->Info << " deleted" << endl;
-    delete root;
-    count++;
-    cout << count << " Nodes deleted from tree" << endl;
 }
 
 TreeNode * TreeType::getRoot(){
@@ -216,12 +184,10 @@ void TreeType::fillTree(TreeNode * & node, string input, int ignore){
     return;
 }
 
-string toUpper(string input){
-    for (int i=0; i<input.length(); i++){
-        input[i] = toupper(input[i]);
-    }
-    return input;
+void TreeType::fillTreeBalanced(TreeNode * &node, string input){
+    
 }
+
 /*
 Takes the Root and requirement length and 
 */
@@ -276,22 +242,36 @@ int TreeType::getNodesAtLevel(TreeNode * &node, int level, ItemType * mainArr){
     
 }
 
-TreeNode * TreeType::getMostLeftNode(TreeNode * & node, int level){
-    static int currLevel = 0;
-    if(currLevel == level){
-        cout<<"most left found" <<endl;
+TreeNode * TreeType::getSmallest(TreeNode * & node){
+    if((node->left == nullptr) && (node->right == nullptr)){
         return node;
     }
-    if(((node->left != nullptr)&& (node->right != nullptr)) || ((node->left != nullptr)&& (node->right == nullptr))){
-        currLevel++;
-        getMostLeftNode(node->left, level);
+    else if(node->left != nullptr){
+        getSmallest(node->left);
     }
-    else if (node->right != nullptr){
-        currLevel++;
-        getMostLeftNode(node->right, level);
+    else if(node->right != nullptr){
+        getSmallest(node->right);
     }
-    else if((node->left == nullptr) && (node->right == nullptr)){
-        cout<<"your tree is not balanced"<<endl;
-        return root;
+    else{
+        cout<<"error"<<endl;
+    }
+}
+
+void TreeType::printAncestor(TreeNode * &node, ItemType target){
+    if(node->Info == target){
+        cout<<"Target found, printing ancestors.."<<endl;
+        while(node->ancestor != nullptr){
+            node = node->ancestor;
+            cout<<node->Info<< endl;
+        }
+    return;
+    }
+    else{
+        if(node->left != nullptr){
+            printAncestor(node->left, target);
+        }
+        if(node->right != nullptr){
+            printAncestor(node->right, target);
+        }
     }
 }

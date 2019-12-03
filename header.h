@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<cmath>
+#include<algorithm>
 using namespace std;
 typedef char ItemType;
 
@@ -27,12 +28,13 @@ class TreeType{
 
     public:
     TreeType();
-    ~TreeType();
+    void DeleteTree(TreeNode * & node);
     // select the root
     int setRoot(string input);
     //check the tree is full or not
     //get root of tree
     TreeNode * getRoot();
+    void fillTreeBalanced(TreeNode * & node, string input);
     void fillTree(TreeNode * & root, string input, int ignore);
     void IsFullTree(TreeNode * &root, int requirement);
     //check if tree organization is correct
@@ -42,8 +44,8 @@ class TreeType{
     //get number of nodes at current level
     int getNodesAtLevel(TreeNode * &node, int level, ItemType * mainArr);
     //prints ancestor of given node
-    void printAncestor(const TreeNode &currentNode, int level);
+    void printAncestor(TreeNode * &node, ItemType target);
     friend void charValue();
 
-    TreeNode * getMostLeftNode(TreeNode * & node, int level);
+    TreeNode * getSmallest(TreeNode * & node);
 };
